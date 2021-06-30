@@ -15,8 +15,8 @@ module Mautic
     def initialize(url, request = nil)
       @url = url
 
-      @host = request&.host
-      @forward_ip = request&.remote_ip
+      @host = request.try(:host)
+      @forward_ip = request.try(:remote_ip)
     end
 
     def send_data(form_id, &block)
