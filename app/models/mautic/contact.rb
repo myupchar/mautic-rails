@@ -50,7 +50,7 @@ module Mautic
           tags: Tag::Collection.new(self, *tags),
           doNotContact: source['doNotContact'] || [],
           owner: owner['id'],
-          stage_id: stage&.id,
+          stage_id: stage.try(:id),
         }
       end
     end
@@ -154,7 +154,7 @@ module Mautic
                when Hash
                  Mautic::Stage.new(connection, object_or_hash)
                end
-      @table[:stage_id] = @stage&.id
+      @table[:stage_id] = @stage.try(:id)
       @stage
     end
 
