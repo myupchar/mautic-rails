@@ -16,7 +16,7 @@ module Mautic
     def initialize(response, message = nil)
       @errors ||= []
       @response = response
-      @request_url = response.response&.env&.url
+      @request_url = response.env.url
       body = if response.body.start_with? "<!DOCTYPE html>"
                response.body.split("\n").last
              else
