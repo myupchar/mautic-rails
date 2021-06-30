@@ -3,7 +3,7 @@ module Mautic
 
     def initialize(connection, hash = nil)
       hash["id"] ||= hash["eventId"]
-      hash["dateAdded"] ||= hash["timestamp"]&.to_time
+      hash["dateAdded"] ||= hash["timestamp"].try(:to_time)
       super
     end
 
