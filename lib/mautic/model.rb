@@ -132,7 +132,20 @@ module Mautic
       end
     end
 
-    def to_mautic(data = @table)
+        def to_mautic(data = @table)
+      h = MauticHash.new
+      data.each do |x, val|
+        if val.respond_to?(:to_mautic)
+          h[x] = val.to_mautic
+        elsif val.is_a?(Array)
+          h[x] = val.join("|")
+        else
+          h[x] =val
+        end
+      end
+      return h
+    end
+    def to_mautic_deprecated(data = @table)
       data.transform_values do |val|
         if val.respond_to?(:to_mautic)
           val.to_mautic
