@@ -94,8 +94,9 @@ module Mautic
 
     def do_not_contact!(comments: '')
       begin
-        json = @connection.request(:post, "api/contacts/#{id}/dnc/sms/add", body: { comments: comments })
-        self.attributes = { doNotContact: json[endpoint.singularize]["doNotContact"] }
+        json = @connection.request(:post, "api/contacts/#{id}/dnc/email/add", body: { comments: comments })
+        json_sms = @connection.request(:post, "api/contacts/#{id}/dnc/sms/add", body: { comments: comments })
+        self.attributes = { doNotContact: json[endpoint.singularize]["doNotContact"]+json_sms[endpoint.singularize]["doNotContact"] }
         clear_changes
       rescue ValidationError => e
         self.errors = e.errors
@@ -108,8 +109,9 @@ module Mautic
 
     def remove_do_not_contact!
       begin
-        json = @connection.request(:post, "api/contacts/#{id}/dnc/sms/remove", body: {})
-        self.attributes = { doNotContact: json[endpoint.singularize]["doNotContact"] }
+        json = @connection.request(:post, "api/contacts/#{id}/dnc/email/remove", body: {})
+        json_sms = @connection.request(:post, "api/contacts/#{id}/dnc/sms/remove", body: {})
+        self.attributes = { doNotContact: json[endpoint.singularize]["doNotContact"]+json_sms[endpoint.singularize]["doNotContact"] }
         clear_changes
       rescue ValidationError => e
         self.errors = e.errors
